@@ -1,0 +1,64 @@
+/* Modal遮罩层样式 */
+.y-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(212, 212, 212, 0.5); /* 半透明黑色背景 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 确保在其他元素之上 */
+}
+
+/* Modal内容区域 */
+.y-modal-container {
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+    min-width: 300px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+}
+.y-modal-header {
+
+    height: 20px;
+}
+
+/* Modal标题样式 */
+.y-modal-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+    flex: 1;
+
+}
+
+.y-modal-content {
+    overflow: scroll;
+
+}
+/* 关闭按钮样式 */
+.y-modal-action {
+    height: 40px;
+}
+
+/* 可选：点击遮罩层关闭Modal */
+.modal-overlay.closeable {
+    cursor: pointer;
+}
+
+/* 可选：遮罩层出现动画 */
+.modal-overlay {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.open {
+    opacity: 1;
+}
