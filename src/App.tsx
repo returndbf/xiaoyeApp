@@ -2,6 +2,7 @@ import './App.css'
 
 import HistoryList from './views/HistoryList/Index'
 import EatWhat from './views/EatWhat/Index'
+import EasterEgg from './views/EasterEgg/Index'
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
             <div className={'flex justify-center items-center h-[80%] flex-col'}>
                 <HistoryList></HistoryList>
                 <EatWhat></EatWhat>
+                <EasterEgg></EasterEgg>
             </div>
         </div>
     )

@@ -6,4 +6,5 @@ export  interface ToastProps {
     position?: 'top' | 'bottom' | 'center' ;
     type?: 'success' | 'error' | 'info' | 'warning';
     onClose?: () => void;
+    cusBg?:string
 }

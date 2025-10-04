@@ -47,8 +47,7 @@ const Index = () => {
 
     return (
         <>
-            <button className={"btn btn-accent m-2 btn-lg w-35"} {...bind()} >{currentSelected}
-            </button>
+            <button className={"btn btn-accent m-2 btn-lg w-35"} {...bind()} >{currentSelected}</button>
             <Modal open={open} showFooter={true} modalHeight={'20vh'} modalWidth={'70vw'}
                    onConfirm={handleInsert} onClose={() => setOpen(false)} okText={'添加'} title={'添加菜单项'}
                    isCenter={true}>

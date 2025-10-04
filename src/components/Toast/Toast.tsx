@@ -5,10 +5,12 @@ import type {ToastProps} from "../../types/components/Toast.ts";
 import './Toast.css'
 import {AnimatePresence, motion} from "motion/react";
 
+
 export class ToastManager {
     // 全局变量存储当前的更新函数
     private static toastUpdate: Dispatch<ToastProps | null> = () => {
     };
+    private static timer: number|undefined = undefined;
 
     // 初始化，在 App 渲染后注入 update 函数
     static init(updateFn: Dispatch<ToastProps | null>) {
@@ -28,7 +30,7 @@ export class ToastManager {
                 }
             }
             this.toastUpdate(toastInstance);
-            setTimeout(() => {
+            ToastManager.timer = setTimeout(() => {
                 ToastManager.clear();
             }, toastInstance?.duration || 3000)
         }
@@ -37,9 +39,10 @@ export class ToastManager {
     static clear() {
         if (this.toastUpdate) {
             this.toastUpdate(null);
+            clearTimeout(ToastManager.timer)
         }
     }
-};
+}
 
 // Toast 组件本身
 export function ToastContainer() {
@@ -55,7 +58,6 @@ export function ToastContainer() {
         'info': {backgroundColor: '#60afef', color: '#012444'},
         'warning': {backgroundColor: '#efbb6c', color: '#4d3000'},
     }
-
     // 将 setToasts 注入到管理器中
     ToastManager.init(setToasts);
     return (
@@ -66,7 +68,18 @@ export function ToastContainer() {
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
                 >
-                    <div
+                    {toast?.cusBg ? <div style={{
+                        width: '30vw',
+                        top: '20vh',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        boxShadow: 'none',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }} className={'dbf-toast'}>
+                        <img src={toast?.cusBg} alt={''}/>
+                        {toast.message}
+                    </div> : <div
                         className={'dbf-toast'}
                         style={{
                             ...positionStyle[toast.position || 'center'],
@@ -74,7 +87,7 @@ export function ToastContainer() {
                         }}
                     >
                         {toast.message}
-                    </div>
+                    </div>}
                 </motion.div>
 
 
