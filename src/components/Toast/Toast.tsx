@@ -3,6 +3,7 @@ import {type CSSProperties, type Dispatch, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import type {ToastProps} from "../../types/components/Toast.ts";
 import './Toast.css'
+import {AnimatePresence, motion} from "motion/react";
 
 export class ToastManager {
     // 全局变量存储当前的更新函数
@@ -16,6 +17,7 @@ export class ToastManager {
 
     // 命令式 API
     static show(toastInstance: ToastProps | null | string) {
+        ToastManager.clear()
         if (this.toastUpdate) {
             if (typeof toastInstance === 'string') {
                 toastInstance = {
@@ -27,12 +29,12 @@ export class ToastManager {
             }
             this.toastUpdate(toastInstance);
             setTimeout(() => {
-                ToastManager.hide();
+                ToastManager.clear();
             }, toastInstance?.duration || 3000)
         }
     }
 
-    static hide() {
+    static clear() {
         if (this.toastUpdate) {
             this.toastUpdate(null);
         }
@@ -56,28 +58,36 @@ export function ToastContainer() {
 
     // 将 setToasts 注入到管理器中
     ToastManager.init(setToasts);
-
     return (
-        <>
-            {toast && <div className={'dbf-toast'}
-                           style={{
-                               ...positionStyle[toast?.position || 'center'],
-                               ...typeStyle[toast?.type || 'info'],
+        <AnimatePresence>
+            {toast && (
+                <motion.div
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1}}
+                    exit={{opacity: 0}}
+                >
+                    <div
+                        className={'dbf-toast'}
+                        style={{
+                            ...positionStyle[toast.position || 'center'],
+                            ...typeStyle[toast.type || 'info'],
+                        }}
+                    >
+                        {toast.message}
+                    </div>
+                </motion.div>
 
-                           }}
-            >
-                {toast?.message}
-            </div>}
 
-        </>
+            )}
+        </AnimatePresence>
     );
 }
 
 // Portal 挂载点
 const mount = document.createElement('div');
 mount.id = 'toast-root';
-mount.style.position='relative'
-mount.style.zIndex='9999'
+mount.style.position = 'relative'
+mount.style.zIndex = '9999'
 document.body.appendChild(mount);
 
 // 渲染 ToastContainer 到 DOM

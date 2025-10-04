@@ -5,7 +5,6 @@ import {useDrag} from "@use-gesture/react";
 import {ToastManager as Toast} from '../../components/Toast/Toast.tsx';
 
 const Index = () => {
-
     const [menu, setMenu] = useState<string[]>(JSON.parse(localStorage.getItem('menu') as string) || [])
     const [open, setOpen] = useState(false)
     const [inputText, setInputText] = useState<string>('')
@@ -24,24 +23,28 @@ const Index = () => {
     );
 
     const handleEatWhatClick = () => {
-
         setOpen(true)
+        setTimeout(() => {
+            inputRef?.current?.focus()
+        }, 0)
+
+
     }
+
     const onChooseEat = () => {
         if (menu.length === 0) return setCurrentSelected('没有内容哦')
         const randomNum = Math.floor(Math.random() * menu.length);
-
         setCurrentSelected(() => menu[randomNum])
-
     }
+
     const handleInsert = () => {
         setMenu(() => menu.concat([inputText]))
-
         localStorage.setItem('menu', JSON.stringify(menu.concat([inputText])))
         setInputText('')
-        Toast.show({message: '添加成功，可以继续添加！', duration: 2000, type: 'success', position: 'center'});
+        Toast.show({message: '添加成功！', duration: 2000, type: 'info', position: 'center'});
         inputRef?.current?.focus()
     }
+
     return (
         <>
             <button className={"btn btn-accent m-2 btn-lg w-35"} {...bind()} >{currentSelected}
