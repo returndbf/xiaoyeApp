@@ -1,2 +1,13 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+html, body {
+    height: 100dvh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+#root{
+    height: 100dvh;
+    overflow: hidden;
+}
