@@ -1,6 +1,7 @@
 import {useRef, useState} from "react";
 import Modal from "../../components/Modal/Modal.tsx";
 import {useDrag} from "@use-gesture/react";
+import {debounce} from "../../utils";
 // import Toast from "../../components/Toast/Toast.tsx";
 import {ToastManager as Toast} from '../../components/Toast/Toast.tsx';
 
@@ -10,15 +11,18 @@ const Index = () => {
     const [inputText, setInputText] = useState<string>('')
     const inputRef = useRef<HTMLInputElement>(null)
     const [currentSelected, setCurrentSelected] = useState('二个按钮')
+
+
     const bind = useDrag(
         (state) => {
             const {active, tap} = state;
             if (tap) handleEatWhatClick()
-            else if (active) onChooseEat()
+            else if (active) handleChooseEatDebounced()
         },
         {
             filterTaps: true, // 启用 tap 检测
             threshold: 10,     // 滑动阈值
+            delay: 100
         }
     );
 
@@ -36,6 +40,7 @@ const Index = () => {
         const randomNum = Math.floor(Math.random() * menu.length);
         setCurrentSelected(() => menu[randomNum])
     }
+    const handleChooseEatDebounced = debounce(onChooseEat, 100);
 
     const handleInsert = () => {
         setMenu(() => menu.concat([inputText]))

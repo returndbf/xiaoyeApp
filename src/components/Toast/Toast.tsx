@@ -78,7 +78,7 @@ export function ToastContainer() {
                         flexDirection: 'column'
                     }} className={'dbf-toast'}>
                         <img src={toast?.cusBg} alt={''}/>
-                        {toast.message}
+                        <div style={{width:'50vw'}}>{toast.message}</div>
                     </div> : <div
                         className={'dbf-toast'}
                         style={{
