@@ -1,1 +1,1 @@
-export const API_URL = 'https://4ks1206463.zicp.fun'
+export const API_URL = 'https://4ks1206463.zicp.fun';

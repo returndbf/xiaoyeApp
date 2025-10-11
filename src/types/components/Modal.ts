@@ -12,5 +12,6 @@ export type ModalProps = Partial<{
     modalHeight: string;
     modalWidth: string;
     children: ReactNode;
-    isCenter?: boolean
+    isCenter?: boolean;
+    onOpen?: () => void;
 }>

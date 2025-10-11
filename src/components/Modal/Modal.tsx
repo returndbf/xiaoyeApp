@@ -1,7 +1,7 @@
 import "./Modal.css"
 import type {ModalProps} from "../../types/components/Modal.ts"
 import {motion, AnimatePresence} from "motion/react"
-import type {CSSProperties} from "react";
+import {type CSSProperties, useEffect} from "react";
 
 const Modal = ({
                    open,
@@ -15,6 +15,8 @@ const Modal = ({
                    onConfirm,
                    children,
                    isCenter = false,
+                   onOpen = () => {
+                   }
                }: ModalProps) => {
     const modalContentHeight = showFooter ? 'calc(100% - 60px - 10px)' : 'calc(100% - 20px - 10px)'
 
@@ -24,6 +26,11 @@ const Modal = ({
         alignItems: 'center'
     }
     const applyCenterStyle: CSSProperties = isCenter ? centerStyle : {}
+    useEffect(() => {
+        if (open) {
+            onOpen()
+        }
+    }, [open])
     return (
         <AnimatePresence>
             {open &&

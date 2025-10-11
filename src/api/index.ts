@@ -7,3 +7,12 @@ export const queryHistoryList = async ()=>{
 export const queryDiaryList = async ()=>{
     return request<Diary[]>(`${API_URL}/ye/diary`,{method:'GET'})
 }
+export const insertDiary = async (diary: Diary,file:File)=>{
+    const formData = new FormData();
+    if(file){
+        formData.append('image',file);
+    }
+    formData.append('title',diary.title)
+    formData.append('content',diary.content)
+    return request(`${API_URL}/ye/diary`,{method:'POST',body:formData})
+}

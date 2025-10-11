@@ -4,7 +4,7 @@ interface IResponse<T> {
     message: string;
 }
 
-export async function request<T>(url: string, options?: Record<string, string>): Promise<T> {
+export async function request<T>(url: string, options?: Record<string, any>): Promise<T> {
     const res = await fetch(url, options);
     const rawData = await res.json() as IResponse<T>;
 

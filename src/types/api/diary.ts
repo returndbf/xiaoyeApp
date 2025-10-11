@@ -1,7 +1,8 @@
 export interface Diary{
-    id: string;
+    id?: string;
     content: string;
     title: string;
-    uploader: string;
-    uploadTime: string;
+    uploader?: string;
+    uploadTime?: string;
+    picture?: string;
 }
