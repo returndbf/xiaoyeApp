@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import Modal from "../../components/Modal/Modal.tsx";
 import {insertDiary, queryDiaryList} from "../../api";
 import type {Diary} from "../../types/api/diary.ts";
+import {ToastManager as Toast} from '../../components/Toast/Toast.tsx';
 
 const Index = () => {
     const [isShowDiaryModal, setIsShowDiaryModal] = useState(false)
@@ -18,6 +19,9 @@ const Index = () => {
         setDiaryModal(true)
     }
     const onEditConfirm = async () => {
+        if(!curDiary.title || !curDiary.content){
+            return Toast.show({message: '请填写标题和内容哦！', duration: 2000, type: 'error', position: 'center'});
+        }
         const response = await insertDiary(curDiary, file!)
         if(response){
             getDiaryList()
