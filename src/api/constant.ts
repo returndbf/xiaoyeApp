@@ -1,1 +1,1 @@
-export const API_URL = 'http://ye.nat123.top:39579'
+export const API_URL = 'https://4ks1206463.zicp.fun'
