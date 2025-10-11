@@ -3,7 +3,7 @@ import './App.css'
 import HistoryList from './views/HistoryList/Index'
 import EatWhat from './views/EatWhat/Index'
 import EasterEgg from './views/EasterEgg/Index'
-
+import Diary from "./views/Diary/Index"
 function App() {
 
 
@@ -17,6 +17,7 @@ function App() {
                 <HistoryList></HistoryList>
                 <EatWhat></EatWhat>
                 <EasterEgg></EasterEgg>
+                <Diary></Diary>
             </div>
         </div>
     )
