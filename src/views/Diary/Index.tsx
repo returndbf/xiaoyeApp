@@ -1,4 +1,4 @@
-import {use, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import Modal from "../../components/Modal/Modal.tsx";
 import {queryDiaryList} from "../../api";
 import type {Diary} from "../../types/api/diary.ts";

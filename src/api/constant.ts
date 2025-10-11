@@ -1,1 +1,1 @@
-export const API_URL = 'http://localhost:8888';
+export const API_URL = 'http://ye.nat123.top:39579'
