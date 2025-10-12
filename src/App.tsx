@@ -4,6 +4,7 @@ import HistoryList from './views/HistoryList/Index'
 import EatWhat from './views/EatWhat/Index'
 import EasterEgg from './views/EasterEgg/Index'
 import Diary from "./views/Diary/Index"
+import YeCoin from "./views/YeCoin/Index"
 function App() {
 
 
@@ -18,6 +19,7 @@ function App() {
                 <EatWhat></EatWhat>
                 <EasterEgg></EasterEgg>
                 <Diary></Diary>
+                <YeCoin></YeCoin>
             </div>
         </div>
     )

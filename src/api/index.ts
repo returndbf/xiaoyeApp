@@ -16,3 +16,6 @@ export const insertDiary = async (diary: Diary,file:File)=>{
     formData.append('content',diary.content)
     return request(`${API_URL}/ye/diary`,{method:'POST',body:formData})
 }
+export const queryYeCoin = async ()=>{
+    return request<number>(`${API_URL}/ye/coin`)
+}
