@@ -19,7 +19,10 @@ const Diary = ({getCoin}: IProps) => {
     })
     const [file, setFile] = useState<File>()
     const [diaryModal, setDiaryModal] = useState<boolean>(false)
-
+    const showDiary = () => {
+        setIsShowDiaryModal(true)
+        getDiaryList()
+    }
     const getDiaryList = async () => {
         const list = await queryDiaryList()
         setDiaryList(list)
@@ -69,12 +72,12 @@ const Diary = ({getCoin}: IProps) => {
         const inputFile = e.target.files?.[0];
         setFile(inputFile);
     };
-    useEffect(() => {
-        getDiaryList()
-    }, [])
+    // useEffect(() => {
+    //     getDiaryList()
+    // }, [])
     return (
         <div>
-            <button className={"btn  m-2 btn-lg w-35"} onClick={() => setIsShowDiaryModal(true)}>日记列表</button>
+            <button className={"btn  m-2 btn-lg w-35"} onClick={showDiary}>日记列表</button>
             <Modal open={isShowDiaryModal} modalHeight={'80vh'} title={'日记列表'} showFooter={true}
                    onClose={() => setIsShowDiaryModal(false)} okText={'添加日记'} onConfirm={onListConfirm}>
                 {
