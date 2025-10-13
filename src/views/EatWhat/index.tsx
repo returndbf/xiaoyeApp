@@ -5,7 +5,7 @@ import {debounce} from "../../utils";
 // import Toast from "../../components/Toast/Toast.tsx";
 import {ToastManager as Toast} from '../../components/Toast/Toast.tsx';
 
-const Index = () => {
+const EatWhat = () => {
     const [menu, setMenu] = useState<string[]>(JSON.parse(localStorage.getItem('menu') as string) || [])
     const [open, setOpen] = useState(false)
     const [inputText, setInputText] = useState<string>('')
@@ -67,4 +67,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default EatWhat;

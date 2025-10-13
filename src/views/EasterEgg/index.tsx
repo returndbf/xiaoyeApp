@@ -5,7 +5,7 @@ import threeBg from '../../assets/toast-bg/three.svg'
 import fourBg from '../../assets/toast-bg/four.png'
 import fiveBg from '../../assets/toast-bg/five.png'
 
-const Index = () => {
+const EasterEgg = () => {
     const sentence = ['我可能被彩蛋所inject了', '奖励系统很快就来', '小乖今天乖吗', '看到这里就打开微信给我问好', '第二个按钮可以点击也可以滑动','期待见面！']
     const bgs = [oneBg, twoBg, threeBg, fourBg, fiveBg]
     const handleClick = () => {
@@ -24,4 +24,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default EasterEgg;

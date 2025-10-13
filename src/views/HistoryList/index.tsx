@@ -3,8 +3,7 @@ import {queryHistoryList} from "../../api";
 import Modal from "../../components/Modal/Modal.tsx";
 
 
-
-const Index = () => {
+const HistoryList = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [historyList, setHistoryList] = useState<string[]>([])
     const onHistoryBtnClick = async () => {
@@ -24,4 +23,4 @@ const Index = () => {
     );
 }
 
-export default Index;
+export default HistoryList;

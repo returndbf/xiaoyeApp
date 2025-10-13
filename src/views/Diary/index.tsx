@@ -1,13 +1,22 @@
 import {useEffect, useState} from "react";
 import Modal from "../../components/Modal/Modal.tsx";
-import {insertDiary, queryDiaryList} from "../../api";
-import type {Diary} from "../../types/api/diary.ts";
+import {insertDiary, queryDiaryList, updateYeCoin} from "../../api";
+import type {IDiary} from "../../types/api/diary.ts";
 import {ToastManager as Toast} from '../../components/Toast/Toast.tsx';
 
-const Index = () => {
+interface IProps {
+    getCoin: () => void
+}
+
+const Diary = ({getCoin}: IProps) => {
     const [isShowDiaryModal, setIsShowDiaryModal] = useState(false)
-    const [diaryList, setDiaryList] = useState<Diary[]>([])
-    const [curDiary, setCurDiary] = useState<Diary>({content: "", title: "", uploader: "", picture: ''})
+    const [diaryList, setDiaryList] = useState<IDiary[]>([])
+    const [curDiary, setCurDiary] = useState<IDiary>({
+        content: "",
+        title: "",
+        uploader: localStorage.getItem('user') || '',
+        picture: ''
+    })
     const [file, setFile] = useState<File>()
     const [diaryModal, setDiaryModal] = useState<boolean>(false)
 
@@ -19,15 +28,20 @@ const Index = () => {
         setDiaryModal(true)
     }
     const onEditConfirm = async () => {
-        if(!curDiary.title || !curDiary.content){
+        if (!curDiary.title || !curDiary.content) {
             return Toast.show({message: '请填写标题和内容哦！', duration: 2000, type: 'error', position: 'center'});
         }
         const response = await insertDiary(curDiary, file!)
-        if(response){
+        if (response) {
             getDiaryList()
             setDiaryModal(false)
             localStorage.removeItem('diaryTitle')
             localStorage.removeItem('diaryContent')
+            const updateRes = await updateYeCoin(1)
+            if (updateRes) {
+                Toast.show({message: '添加成功，积分+1！', duration: 2000, type: 'success', position: 'center'});
+                getCoin()
+            }
         }
 
     }
@@ -92,4 +106,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default Diary;
