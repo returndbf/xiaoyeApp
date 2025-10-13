@@ -37,11 +37,15 @@ const Diary = ({getCoin}: IProps) => {
             setDiaryModal(false)
             localStorage.removeItem('diaryTitle')
             localStorage.removeItem('diaryContent')
-            const updateRes = await updateYeCoin(1)
-            if (updateRes) {
-                Toast.show({message: '添加成功，积分+1！', duration: 2000, type: 'success', position: 'center'});
-                getCoin()
+            if (curDiary.uploader === 'ye') {
+                const updateRes = await updateYeCoin(1)
+                if (updateRes) {
+                    Toast.show({message: '添加成功，积分+1！', duration: 2000, type: 'success', position: 'center'});
+                    getCoin()
+                }
             }
+
+
         }
 
     }
