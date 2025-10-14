@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const EasterEgg = ({getCoin}: IProps) => {
-    const sentence = ['写日志后有概率获得双倍积分！', '积分系统上线啦', '小乖今天乖吗', '看到这里就打开微信给我问好', '第二个按钮可以点击也可以滑动', '期待下次见面！']
+    const sentence = ['写日志后有概率获得双倍积分！', '积分系统上线啦', '小乖今天乖吗', '看到这里就打开微信给我问好', '彩蛋真的有彩蛋！', '期待下次见面！']
     const bgs = [oneBg, twoBg, threeBg, fourBg, fiveBg]
 
     useEffect(() => {

@@ -89,30 +89,38 @@ const Diary = ({getCoin}: IProps) => {
         const inputFile = e.target.files?.[0];
         setFile(inputFile);
     };
-    // useEffect(() => {
-    //     getDiaryList()
-    // }, [])
+
     return (
         <div>
             <button className={"btn  m-2 btn-lg w-35"} onClick={showDiary}>日记列表</button>
             <Modal open={isShowDiaryModal} modalHeight={'80vh'} title={'日记列表'} showFooter={true}
                    onClose={() => setIsShowDiaryModal(false)} okText={'添加日记'} onConfirm={onListConfirm}>
-                {
-                    diaryList?.map((item, index) => {
-                        return (
-                            <div className="collapse collapse-arrow bg-base-100 border-base-300 border mb-2"
-                                 key={index}>
-                                <input type="checkbox"/>
-                                <div className="collapse-title font-semibold">{item.title}</div>
-                                <div className="collapse-content text-sm">
-                                    <div>{item.content}</div>
-                                    {item.picture && <img src={item.picture} width={100} height={100} alt={''}/>}
-                                </div>
 
-                            </div>
-                        )
-                    })
-                }
+                    <div className="collapse  collapse-arrow bg-base-100 border border-base-300 mb-2">
+                        <input type="checkbox" name="my-accordion-1" defaultChecked/>
+                        <div className="collapse-title font-semibold">11月</div>
+                        <div className="collapse-content text-sm">
+                            {
+                                diaryList?.map((item, index) => {
+                                    return (
+                                        <div className="collapse collapse-arrow bg-base-100 border-base-300 border mb-2"
+                                             key={index} data-theme="cupcake">
+                                            <input type="checkbox" name={'diary'}/>
+                                            <div className="collapse-title font-semibold">{item.title}</div>
+                                            <div className="collapse-content text-sm">
+                                                <div>{item.content}</div>
+                                                {item.picture &&
+                                                    <img src={item.picture} width={100} height={100} alt={''}/>}
+                                            </div>
+
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+
+
             </Modal>
             <Modal open={diaryModal} modalHeight={'60vh'} title={'添加日记'} showFooter={true}
                    onClose={() => setDiaryModal(false)} onConfirm={onEditConfirm} onOpen={onEditModalOpen}
