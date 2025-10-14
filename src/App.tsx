@@ -28,7 +28,7 @@ function App() {
                 <Lock></Lock>
                 <HistoryList></HistoryList>
                 <EatWhat></EatWhat>
-                <EasterEgg></EasterEgg>
+                <EasterEgg getCoin={getYeCoin}></EasterEgg>
                 <Diary getCoin={getYeCoin}></Diary>
                 <YeCoin coinNumber={coinNumber}></YeCoin>
             </div>
