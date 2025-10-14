@@ -1,12 +1,14 @@
-import { useState} from "react";
+import {useState} from "react";
 import Modal from "../../components/Modal/Modal.tsx";
 import {insertDiary, queryDiaryList, updateYeCoin} from "../../api";
 import type {IDiary} from "../../types/api/diary.ts";
 import {ToastManager as Toast} from '../../components/Toast/Toast.tsx';
+import {generateRandomNumber} from "../../utils";
 
 interface IProps {
     getCoin: () => void
 }
+
 
 const Diary = ({getCoin}: IProps) => {
     const [isShowDiaryModal, setIsShowDiaryModal] = useState(false)
@@ -41,9 +43,21 @@ const Diary = ({getCoin}: IProps) => {
             localStorage.removeItem('diaryTitle')
             localStorage.removeItem('diaryContent')
             if (curDiary.uploader === 'ye') {
-                const updateRes = await updateYeCoin(1)
+                const randomNumber = generateRandomNumber(10);
+                let updateCoin = 0;
+                if (randomNumber > 8) {
+                    updateCoin = 2
+                } else {
+                    updateCoin = 1
+                }
+                const updateRes = await updateYeCoin(updateCoin)
                 if (updateRes) {
-                    Toast.show({message: '添加成功，积分+1！', duration: 2000, type: 'success', position: 'center'});
+                    Toast.show({
+                        message: `添加成功，积分+${updateCoin}！`,
+                        duration: 2000,
+                        type: 'success',
+                        position: 'center'
+                    });
                     getCoin()
                 }
             }
@@ -89,7 +103,7 @@ const Diary = ({getCoin}: IProps) => {
                                 <div className="collapse-title font-semibold">{item.title}</div>
                                 <div className="collapse-content text-sm">
                                     <div>{item.content}</div>
-                                    {item.picture && <img src={item.picture} width={100} height={100}/>}
+                                    {item.picture && <img src={item.picture} width={100} height={100} alt={''}/>}
                                 </div>
 
                             </div>
