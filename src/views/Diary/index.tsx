@@ -21,6 +21,7 @@ const Diary = ({getCoin}: IProps) => {
     })
     const [file, setFile] = useState<File>()
     const [diaryModal, setDiaryModal] = useState<boolean>(false)
+    const [modalLoading, setModalLoading] = useState<boolean>(false)
     const showDiary = () => {
         setIsShowDiaryModal(true)
         getDiaryList()
@@ -36,9 +37,11 @@ const Diary = ({getCoin}: IProps) => {
         if (!curDiary.title || !curDiary.content) {
             return Toast.show({message: '请填写标题和内容哦！', duration: 2000, type: 'error', position: 'center'});
         }
+        setModalLoading(true)
         const response = await insertDiary(curDiary, file!)
         if (response) {
             getDiaryList()
+            setModalLoading(false)
             setDiaryModal(false)
             localStorage.removeItem('diaryTitle')
             localStorage.removeItem('diaryContent')
@@ -112,7 +115,8 @@ const Diary = ({getCoin}: IProps) => {
                 }
             </Modal>
             <Modal open={diaryModal} modalHeight={'60vh'} title={'添加日记'} showFooter={true}
-                   onClose={() => setDiaryModal(false)} onConfirm={onEditConfirm} onOpen={onEditModalOpen}>
+                   onClose={() => setDiaryModal(false)} onConfirm={onEditConfirm} onOpen={onEditModalOpen}
+                   isLoading={modalLoading}>
                 <input type="text" placeholder="输入日记标记" className="input  mb-4" value={curDiary.title}
                        onInput={(e) => {
                            onDiaryInput('title', e.currentTarget.value)
