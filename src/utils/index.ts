@@ -12,3 +12,7 @@ export const debounce = <T extends (...args: never[]) => void>(
         }, delay);
     };
 }
+
+export const generateRandomNumber = (maxNumber: number): number => {
+    return Math.floor(Math.random() * maxNumber) + 1;
+}

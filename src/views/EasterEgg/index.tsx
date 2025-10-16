@@ -4,12 +4,40 @@ import twoBg from '../../assets/toast-bg/two.png'
 import threeBg from '../../assets/toast-bg/three.svg'
 import fourBg from '../../assets/toast-bg/four.png'
 import fiveBg from '../../assets/toast-bg/five.png'
+import {useEffect} from "react";
+import {generateRandomNumber} from "../../utils";
+import {updateYeCoin} from "../../api";
 
-const EasterEgg = () => {
-    const sentence = ['我可能被彩蛋所inject了', '奖励系统很快就来', '小乖今天乖吗', '看到这里就打开微信给我问好', '第二个按钮可以点击也可以滑动','期待见面！']
+interface IProps {
+    getCoin: () => void
+}
+
+const EasterEgg = ({getCoin}: IProps) => {
+    const sentence = ['写日志后有概率获得双倍积分！', '积分系统上线啦', '小乖今天乖吗', '看到这里就打开微信给我问好', '彩蛋真的有彩蛋！', '期待下次见面！']
     const bgs = [oneBg, twoBg, threeBg, fourBg, fiveBg]
-    const handleClick = () => {
-        Toast.show({
+
+    useEffect(() => {
+        bgs.forEach(bg => {
+            const img = new Image();
+            img.src = bg;
+        });
+    }, []);
+
+
+    const handleClick = async() => {
+        const number = generateRandomNumber(10);
+        if (number === 10) {
+            await updateYeCoin(1)
+             Toast.show({
+                message: '恭喜触发彩蛋，积分+1！',
+                duration: 2000,
+                type: 'success',
+                position: 'center',
+                cusBg: bgs[Math.floor(Math.random() * bgs.length)]
+            })
+            return getCoin()
+        }
+        return Toast.show({
             message: sentence[Math.floor(Math.random() * sentence.length)],
             duration: 2000,
             type: 'info',

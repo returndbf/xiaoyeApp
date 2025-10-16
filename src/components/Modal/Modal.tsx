@@ -15,6 +15,7 @@ const Modal = ({
                    onConfirm,
                    children,
                    isCenter = false,
+                   isLoading = false,
                    onOpen = () => {
                    }
                }: ModalProps) => {
@@ -46,19 +47,25 @@ const Modal = ({
                                 style={{height: modalHeight, width: modalWidth}}>
                         <div className={'flex justify-between items-center y-modal-header'}>
                             <h3 className="font-bold text-sm ">{title}</h3>
-                            <div className="" onClick={onClose}>
-                                <img src='/close.svg' alt={''} className={'h-[20px]'}></img>
-                            </div>
+                            {isLoading ? <span className="loading loading-spinner text-primary"></span> :
+                                <div className="" onClick={onClose}>
+                                    <img src='/close.svg' alt={''} className={'h-[20px]'}></img>
+                                </div>}
                         </div>
 
                         <div className="y-modal-content p-2"
                              style={{height: modalContentHeight, ...applyCenterStyle}}>
                             {children}
                         </div>
-                        {showFooter && <div className="flex items-center justify-end y-modal-action ">
-                            <button className="btn btn-sm mr-2" onClick={onClose}>{cancelText}</button>
-                            <button className="btn btn-sm btn-info" onClick={onConfirm}>{okText}</button>
-                        </div>}
+                        {showFooter &&
+                            <div className="flex items-center justify-end y-modal-action ">
+                                {isLoading ? <span className="loading loading-spinner text-primary"></span> :
+                                    <>
+                                        <button className="btn btn-sm mr-2" onClick={onClose}>{cancelText}</button>
+                                        <button className="btn btn-sm btn-info" onClick={onConfirm}>{okText}</button>
+                                    </>}
+                            </div>
+                        }
                     </motion.div>
                 </div>}
         </AnimatePresence>
