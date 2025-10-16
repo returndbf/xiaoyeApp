@@ -88,7 +88,7 @@ const Diary = ({getCoin}: IProps) => {
                                 <input type="checkbox"/>
                                 <div className="collapse-title font-semibold">{item.title}</div>
                                 <div className="collapse-content text-sm">
-                                    <div>{item.content}</div>
+                                    <div className={'whitespace-pre-wrap'}>{item.content}</div>
                                     {item.picture && <img src={item.picture} width={100} height={100}/>}
                                 </div>
 
