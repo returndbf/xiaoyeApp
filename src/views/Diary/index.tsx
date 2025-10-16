@@ -79,7 +79,7 @@ const Diary = ({getCoin}: IProps) => {
         } catch (error: unknown) {
             console.error("日记提交过程中发生错误:", error);
             Toast.show({
-                message: '添加失败！' + (error.message || ''),
+                message: '添加失败！',
                 duration: 2000,
                 type: 'error',
                 position: 'center'
