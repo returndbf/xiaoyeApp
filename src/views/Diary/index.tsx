@@ -34,41 +34,60 @@ const Diary = ({getCoin}: IProps) => {
         setDiaryModal(true)
     }
     const onEditConfirm = async () => {
+        // 检查标题和内容是否为空
         if (!curDiary.title || !curDiary.content) {
-            return Toast.show({message: '请填写标题和内容哦！', duration: 2000, type: 'error', position: 'center'});
+            return Toast.show({
+                message: '请填写标题和内容哦！',
+                duration: 2000,
+                type: 'error',
+                position: 'center'
+            });
         }
-        setModalLoading(true)
-        const response = await insertDiary(curDiary, file!)
-        if (response) {
-            getDiaryList()
-            setModalLoading(false)
-            setDiaryModal(false)
-            localStorage.removeItem('diaryTitle')
-            localStorage.removeItem('diaryContent')
-            if (curDiary.uploader === 'ye') {
-                const randomNumber = generateRandomNumber(10);
-                let updateCoin = 0;
-                if (randomNumber > 8) {
-                    updateCoin = 2
-                } else {
-                    updateCoin = 1
-                }
-                const updateRes = await updateYeCoin(updateCoin)
-                if (updateRes) {
-                    Toast.show({
-                        message: `添加成功，积分+${updateCoin}！`,
-                        duration: 2000,
-                        type: 'success',
-                        position: 'center'
-                    });
-                    getCoin()
-                }
+
+        setModalLoading(true);
+
+        try {
+            // 插入日记
+            const response = await insertDiary(curDiary, file!);
+
+            if (!response) {
+                throw new Error('插入日记失败');
             }
 
+            // 成功后刷新列表并清理状态
+            await getDiaryList();
+            setDiaryModal(false);
+            localStorage.removeItem('diaryTitle');
+            localStorage.removeItem('diaryContent');
 
+            // 如果上传者是 ye，则增加积分
+            if (curDiary.uploader === 'ye') {
+                const randomNumber = generateRandomNumber(10);
+                const updateCoin = randomNumber > 8 ? 2 : 1;
+
+                await updateYeCoin(updateCoin)
+                
+                Toast.show({
+                    message: `添加成功，积分+${updateCoin}！`,
+                    duration: 2000,
+                    type: 'success',
+                    position: 'center'
+                });
+                getCoin(); // 更新主界面的积分显示
+
+            }
+        } catch (error: never) {
+            console.error("日记提交过程中发生错误:", error);
+            Toast.show({
+                message: '添加失败！' + (error.message || ''),
+                duration: 2000,
+                type: 'error',
+                position: 'center'
+            });
+        } finally {
+            setModalLoading(false); // 不管成功与否都关闭loading状态
         }
-
-    }
+    };
     const onEditModalOpen = () => {
         setCurDiary({
             content: localStorage.getItem('diaryContent') || '',
@@ -96,29 +115,29 @@ const Diary = ({getCoin}: IProps) => {
             <Modal open={isShowDiaryModal} modalHeight={'80vh'} title={'日记列表'} showFooter={true}
                    onClose={() => setIsShowDiaryModal(false)} okText={'添加日记'} onConfirm={onListConfirm}>
 
-                    <div className="collapse  collapse-arrow bg-base-100 border border-base-300 mb-2">
-                        <input type="checkbox" name="my-accordion-1" defaultChecked/>
-                        <div className="collapse-title font-semibold">11月</div>
-                        <div className="collapse-content text-sm">
-                            {
-                                diaryList?.map((item, index) => {
-                                    return (
-                                        <div className="collapse collapse-arrow bg-base-100 border-base-300 border mb-2"
-                                             key={index} data-theme="cupcake">
-                                            <input type="checkbox" name={'diary'}/>
-                                            <div className="collapse-title font-semibold">{item.title}</div>
-                                            <div className="collapse-content text-sm">
-                                                <div  className={'whitespace-pre-wrap'}>{item.content}</div>
-                                                {item.picture &&
-                                                    <img src={item.picture} width={100} height={100} alt={''}/>}
-                                            </div>
-
+                <div className="collapse  collapse-arrow bg-base-100 border border-base-300 mb-2">
+                    <input type="checkbox" name="my-accordion-1" defaultChecked/>
+                    <div className="collapse-title font-semibold">11月</div>
+                    <div className="collapse-content text-sm">
+                        {
+                            diaryList?.map((item, index) => {
+                                return (
+                                    <div className="collapse collapse-arrow bg-base-100 border-base-300 border mb-2"
+                                         key={index} data-theme="cupcake">
+                                        <input type="checkbox" name={'diary'}/>
+                                        <div className="collapse-title font-semibold">{item.title}</div>
+                                        <div className="collapse-content text-sm">
+                                            <div className={'whitespace-pre-wrap'}>{item.content}</div>
+                                            {item.picture &&
+                                                <img src={item.picture} width={100} height={100} alt={''}/>}
                                         </div>
-                                    )
-                                })
-                            }
-                        </div>
+
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
+                </div>
 
 
             </Modal>
