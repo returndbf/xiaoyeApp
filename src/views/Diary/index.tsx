@@ -3,7 +3,7 @@ import Modal from "../../components/Modal/Modal.tsx";
 import {insertDiary, queryDiaryList, updateYeCoin} from "../../api";
 import type {IDiary} from "../../types/api/diary.ts";
 import {ToastManager as Toast} from '../../components/Toast/Toast.tsx';
-import {generateRandomNumber} from "../../utils";
+import {generateRandomNumber, groupBy} from "../../utils";
 
 interface IProps {
     getCoin: () => void
@@ -12,7 +12,8 @@ interface IProps {
 
 const Diary = ({getCoin}: IProps) => {
     const [isShowDiaryModal, setIsShowDiaryModal] = useState(false)
-    const [diaryList, setDiaryList] = useState<IDiary[]>([])
+    // const [diaryList, setDiaryList] = useState<IDiary[]>([])
+    const [groupDiaryList, setGroupDiaryList] = useState<{ key: string; value: IDiary[] }[]>([])
     const [curDiary, setCurDiary] = useState<IDiary>({
         content: "",
         title: "",
@@ -28,7 +29,9 @@ const Diary = ({getCoin}: IProps) => {
     }
     const getDiaryList = async () => {
         const list = await queryDiaryList()
-        setDiaryList(list)
+        // setDiaryList(list)
+        const groupData = groupBy(list, (diary) => diary.upload_month!)
+        setGroupDiaryList(groupData)
     }
     const onListConfirm = () => {
         setDiaryModal(true)
@@ -66,7 +69,7 @@ const Diary = ({getCoin}: IProps) => {
                 const updateCoin = randomNumber > 8 ? 2 : 1;
 
                 await updateYeCoin(updateCoin)
-                
+
                 Toast.show({
                     message: `添加成功，积分+${updateCoin}！`,
                     duration: 2000,
@@ -91,8 +94,7 @@ const Diary = ({getCoin}: IProps) => {
     const onEditModalOpen = () => {
         setCurDiary({
             content: localStorage.getItem('diaryContent') || '',
-            title: localStorage.getItem('diaryTitle') || '',
-            uploader: ''
+            title: localStorage.getItem('diaryTitle') || ''
         })
     }
     const onDiaryInput = (type: string, value: string) => {
@@ -114,30 +116,35 @@ const Diary = ({getCoin}: IProps) => {
             <button className={"btn  m-2 btn-lg w-35"} onClick={showDiary}>日记列表</button>
             <Modal open={isShowDiaryModal} modalHeight={'80vh'} title={'日记列表'} showFooter={true}
                    onClose={() => setIsShowDiaryModal(false)} okText={'添加日记'} onConfirm={onListConfirm}>
+                {
+                    groupDiaryList.map((monthData) => {
+                        return <div className="collapse  collapse-arrow bg-base-100 border border-base-300 mb-2"
+                                    key={monthData.key}>
+                            <input type="checkbox" name="my-accordion-1" defaultChecked/>
+                            <div className="collapse-title font-semibold">{monthData.key}月</div>
+                            <div className="collapse-content text-sm">
+                                {
+                                    monthData?.value?.map((item, index) => {
+                                        return (
+                                            <div
+                                                className="collapse collapse-arrow bg-base-100 border-base-300 border mb-2"
+                                                key={index} data-theme="cupcake">
+                                                <input type="checkbox" name={'diary'}/>
+                                                <div className="collapse-title font-semibold">{item.title}</div>
+                                                <div className="collapse-content text-sm">
+                                                    <div className={'whitespace-pre-wrap'}>{item.content}</div>
+                                                    {item.picture &&
+                                                        <img src={item.picture} width={100} height={100} alt={''}/>}
+                                                </div>
 
-                <div className="collapse  collapse-arrow bg-base-100 border border-base-300 mb-2">
-                    <input type="checkbox" name="my-accordion-1" defaultChecked/>
-                    <div className="collapse-title font-semibold">11月</div>
-                    <div className="collapse-content text-sm">
-                        {
-                            diaryList?.map((item, index) => {
-                                return (
-                                    <div className="collapse collapse-arrow bg-base-100 border-base-300 border mb-2"
-                                         key={index} data-theme="cupcake">
-                                        <input type="checkbox" name={'diary'}/>
-                                        <div className="collapse-title font-semibold">{item.title}</div>
-                                        <div className="collapse-content text-sm">
-                                            <div className={'whitespace-pre-wrap'}>{item.content}</div>
-                                            {item.picture &&
-                                                <img src={item.picture} width={100} height={100} alt={''}/>}
-                                        </div>
-
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                    })
+                }
 
 
             </Modal>
