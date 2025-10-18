@@ -37,6 +37,7 @@ const Diary = ({getCoin}: IProps) => {
         setDiaryModal(true)
     }
     const onEditConfirm = async () => {
+        console.log(curDiary.uploader,"curDiary.uploader")
         // 检查标题和内容是否为空
         if (!curDiary.title || !curDiary.content) {
             return Toast.show({
@@ -93,6 +94,7 @@ const Diary = ({getCoin}: IProps) => {
     };
     const onEditModalOpen = () => {
         setCurDiary({
+            ...curDiary,
             content: localStorage.getItem('diaryContent') || '',
             title: localStorage.getItem('diaryTitle') || ''
         })
