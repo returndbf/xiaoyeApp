@@ -24,19 +24,24 @@ const EasterEgg = ({getCoin}: IProps) => {
     }, []);
 
 
-    const handleClick = async() => {
-        const number = generateRandomNumber(10);
-        if (number === 10) {
-            await updateYeCoin(1)
-             Toast.show({
-                message: '恭喜触发彩蛋，积分+1！',
-                duration: 2000,
-                type: 'success',
-                position: 'center',
-                cusBg: bgs[Math.floor(Math.random() * bgs.length)]
-            })
-            return getCoin()
+    const handleClick = async () => {
+        let number = 0
+        if (localStorage.getItem('luckyCoin') !== new Date().getDate().toString()) {
+            number = generateRandomNumber(10);
+            if (number === 10) {
+                await updateYeCoin(1)
+                localStorage.setItem('luckyCoin', new Date().getDate().toString())
+                Toast.show({
+                    message: '恭喜触发彩蛋，积分+1！',
+                    duration: 2000,
+                    type: 'success',
+                    position: 'center',
+                    cusBg: bgs[Math.floor(Math.random() * bgs.length)]
+                })
+                return getCoin()
+            }
         }
+
         return Toast.show({
             message: sentence[Math.floor(Math.random() * sentence.length)],
             duration: 2000,
